@@ -1,0 +1,1741 @@
+<!DOCTYPE html>
+<html lang="en" style="height:auto;min-height:100%;">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ADIN NYC | The Change Agency</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link id="heading-font-link"
+    href="https://fonts.googleapis.com/css2?family=Inter+Tight:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,300;1,400;1,700&display=swap"
+    rel="stylesheet">
+  <link id="body-font-link" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&display=swap"
+    rel="stylesheet">
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: {
+            heading: ['var(--font-heading-name)', 'sans-serif'],
+            body: ['var(--font-body-name)', 'sans-serif'],
+          },
+          colors: {
+            'adin-black': '#0A0A0A',
+            'adin-white': '#FFFFFF',
+            'adin-green': '#0F5E4E',
+            'adin-light': '#F3F3F3',
+          },
+          spacing: { base: 'var(--space-base)' },
+          borderRadius: {
+            small: 'var(--radius-small)',
+            large: 'var(--radius-large)',
+          },
+          boxShadow: {
+            custom: 'var(--shadow-custom)',
+            'custom-hover': 'var(--shadow-custom-hover)',
+          },
+        }
+      }
+    }
+  </script>
+  <style>
+    :root {
+      --font-heading-name: 'Inter Tight';
+      --font-body-name: 'Inter';
+      --font-heading: 'Inter Tight', sans-serif;
+      --font-body: 'Inter', sans-serif;
+      --letter-spacing-heading: -0.02em;
+      --letter-spacing-body: 0px;
+      --space-base: 1rem;
+      --radius-small: 0px;
+      --radius-large: 0px;
+      --border-width: 1px;
+      --shadow-color: 0 0 0;
+      --shadow-offset-x: 0px;
+      --shadow-offset-y: 4px;
+      --shadow-blur: 24px;
+      --shadow-spread: 0px;
+      --shadow-opacity: 0.12;
+      --shadow-custom: 0px 4px 24px rgba(0, 0, 0, 0.12);
+      --shadow-custom-hover: 0px 8px 40px rgba(0, 0, 0, 0.22);
+    }
+
+    html,
+    body {
+      height: auto;
+      min-height: 100%;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      background: #0A0A0A;
+      color: #FFFFFF;
+      overflow-x: hidden;
+      cursor: none;
+    }
+
+    /* Custom Cursor */
+    .cursor-dot {
+      width: 8px;
+      height: 8px;
+      background: #FFFFFF;
+      border-radius: 50%;
+      position: fixed;
+      top: 0;
+      left: 0;
+      pointer-events: none;
+      z-index: 9999;
+      transform: translate(-50%, -50%);
+      transition: background 0.2s;
+    }
+
+    .cursor-ring {
+      width: 40px;
+      height: 40px;
+      border: 1px solid rgba(255, 255, 255, 0.5);
+      border-radius: 50%;
+      position: fixed;
+      top: 0;
+      left: 0;
+      pointer-events: none;
+      z-index: 9998;
+      transform: translate(-50%, -50%);
+      transition: width 0.3s, height 0.3s, border-color 0.3s;
+    }
+
+    .cursor-ring.hover {
+      width: 64px;
+      height: 64px;
+      border-color: #0F5E4E;
+    }
+
+    /* Nav (FIXED BROWSER GLITCH) */
+    #navbar {
+      transition: padding 0.4s cubic-bezier(0.4, 0, 0.2, 1), background-color 0.4s ease;
+      padding-top: 2rem;
+      padding-bottom: 2rem;
+      background-color: transparent;
+    }
+
+    #navbar::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: rgba(10, 10, 10, 0.92);
+      backdrop-filter: none;
+      -webkit-backdrop-filter: none;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+      opacity: 0;
+      transition: opacity 0.4s ease, backdrop-filter 0.4s ease;
+      z-index: 0;
+      pointer-events: none;
+    }
+
+    #navbar.scrolled {
+      padding-top: 1rem;
+      padding-bottom: 1rem;
+    }
+
+    #navbar.scrolled::before {
+      opacity: 1;
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+    }
+
+    /* Horizontal rule accent */
+    .accent-rule {
+      display: inline-block;
+      width: 40px;
+      height: 2px;
+      background: #0F5E4E;
+      vertical-align: middle;
+      margin-right: 12px;
+    }
+
+    /* Oversized heading style */
+    .display-heading {
+      font-family: 'Inter Tight', sans-serif;
+      font-weight: 800;
+      letter-spacing: -0.03em;
+      line-height: 0.92;
+    }
+
+    /* Image parallax wrapper */
+    .parallax-img-wrap {
+      overflow: hidden;
+      position: relative;
+    }
+
+    .parallax-img-wrap img {
+      will-change: transform;
+      transform-origin: center center;
+    }
+
+    /* Marquee */
+    .marquee-track {
+      display: flex;
+      white-space: nowrap;
+      animation: marquee 28s linear infinite;
+    }
+
+    @keyframes marquee {
+      0% {
+        transform: translateX(0);
+      }
+
+      100% {
+        transform: translateX(-50%);
+      }
+    }
+
+    .marquee-track:hover {
+      animation-play-state: paused;
+    }
+
+    /* Service number */
+    .service-num {
+      font-family: 'Inter Tight', sans-serif;
+      font-size: clamp(120px, 18vw, 260px);
+      font-weight: 800;
+      line-height: 1;
+      letter-spacing: -0.04em;
+      color: transparent;
+      -webkit-text-stroke: 1px rgba(255, 255, 255, 0.08);
+      position: absolute;
+      right: -20px;
+      top: -30px;
+      pointer-events: none;
+      user-select: none;
+    }
+
+    /* Reveal states */
+    .reveal {
+      opacity: 0;
+      transform: translateY(60px);
+    }
+
+    .reveal-left {
+      opacity: 0;
+      transform: translateX(-60px);
+    }
+
+    .reveal-right {
+      opacity: 0;
+      transform: translateX(60px);
+    }
+
+    .reveal-scale {
+      opacity: 0;
+      transform: scale(0.94);
+    }
+
+    /* Underline hover */
+    .link-underline {
+      position: relative;
+      display: inline-block;
+    }
+
+    .link-underline::after {
+      content: '';
+      position: absolute;
+      bottom: -2px;
+      left: 0;
+      width: 0;
+      height: 1px;
+      background: currentColor;
+      transition: width 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    .link-underline:hover::after {
+      width: 100%;
+    }
+
+    /* Btn */
+    .btn-primary {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      position: relative;
+      overflow: hidden;
+      border: 1px solid #FFFFFF;
+      background: transparent;
+      color: #0A0A0A;
+      padding: 16px 32px;
+      font-family: 'Inter Tight', sans-serif;
+      font-weight: 700;
+      font-size: 12px;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      transition: color 0.4s ease, transform 0.3s ease;
+      z-index: 1;
+    }
+
+    .btn-primary::before,
+    .btn-primary::after {
+      content: '';
+      position: absolute;
+      top: 0;
+      bottom: 0;
+      width: 50%;
+      background: #FFFFFF;
+      z-index: -1;
+      transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    .btn-primary::before {
+      left: 0;
+      transform-origin: left;
+    }
+
+    .btn-primary::after {
+      right: 0;
+      transform-origin: right;
+    }
+
+    .btn-primary:hover {
+      color: #FFFFFF;
+      transform: translateY(-2px);
+    }
+
+    .btn-primary:hover::before,
+    .btn-primary:hover::after {
+      transform: scaleX(0);
+    }
+
+    .btn-outline {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      position: relative;
+      overflow: hidden;
+      border: 1px solid rgba(255, 255, 255, 0.4);
+      background: transparent;
+      color: #FFFFFF;
+      padding: 16px 32px;
+      font-family: 'Inter Tight', sans-serif;
+      font-weight: 700;
+      font-size: 12px;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      transition: border-color 0.4s ease, color 0.4s ease, transform 0.3s ease;
+      z-index: 1;
+    }
+
+    .btn-outline::before,
+    .btn-outline::after {
+      content: '';
+      position: absolute;
+      top: 0;
+      bottom: 0;
+      width: 50%;
+      background: #0F5E4E;
+      z-index: -1;
+      transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+      transform: scaleX(0);
+    }
+
+    .btn-outline::before {
+      left: 0;
+      transform-origin: left;
+    }
+
+    .btn-outline::after {
+      right: 0;
+      transform-origin: right;
+    }
+
+    .btn-outline:hover {
+      border-color: #0F5E4E;
+      color: #FFFFFF;
+      transform: translateY(-2px);
+    }
+
+    .btn-outline:hover::before,
+    .btn-outline:hover::after {
+      transform: scaleX(1);
+    }
+
+    .btn-green {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      position: relative;
+      overflow: hidden;
+      border: 1px solid #0F5E4E;
+      background: transparent;
+      color: #FFFFFF;
+      padding: 16px 32px;
+      font-family: 'Inter Tight', sans-serif;
+      font-weight: 700;
+      font-size: 12px;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      transition: color 0.4s ease, transform 0.3s ease;
+      z-index: 1;
+    }
+
+    .btn-green::before,
+    .btn-green::after {
+      content: '';
+      position: absolute;
+      top: 0;
+      bottom: 0;
+      width: 50%;
+      background: #0F5E4E;
+      z-index: -1;
+      transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    .btn-green::before {
+      left: 0;
+      transform-origin: left;
+    }
+
+    .btn-green::after {
+      right: 0;
+      transform-origin: right;
+    }
+
+    .btn-green:hover {
+      color: #0F5E4E;
+      transform: translateY(-2px);
+    }
+
+    .btn-green:hover::before,
+    .btn-green:hover::after {
+      transform: scaleX(0);
+    }
+
+    /* Testimonial card */
+    .testimonial-card {
+      border-top: 1px solid rgba(255, 255, 255, 0.1);
+      padding-top: 2rem;
+    }
+
+    /* Form input */
+    .form-input {
+      width: 100%;
+      background: transparent;
+      border: none;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+      padding: 14px 0;
+      color: #FFFFFF;
+      font-family: 'Inter', sans-serif;
+      font-size: 16px;
+      outline: none;
+      transition: border-color 0.3s;
+    }
+
+    .form-input::placeholder {
+      color: rgba(255, 255, 255, 0.3);
+    }
+
+    .form-input:focus {
+      border-bottom-color: #0F5E4E;
+    }
+
+    /* Scrollbar */
+    ::-webkit-scrollbar {
+      width: 4px;
+    }
+
+    ::-webkit-scrollbar-track {
+      background: #0A0A0A;
+    }
+
+    ::-webkit-scrollbar-thumb {
+      background: #0F5E4E;
+    }
+
+    /* Mobile menu */
+    #mobile-menu {
+      transform: translateX(100%);
+      transition: transform 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    #mobile-menu.open {
+      transform: translateX(0);
+    }
+
+    /* Work card hover */
+    .work-card .work-overlay {
+      opacity: 0;
+      transition: opacity 0.4s;
+    }
+
+    .work-card:hover .work-overlay {
+      opacity: 1;
+    }
+
+    .work-card img {
+      transition: transform 1.2s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    }
+
+    .work-card:hover img {
+      transform: scale(1.06);
+    }
+
+    /* Client item */
+    .client-item {
+      border-bottom: 1px solid rgba(255, 255, 255, 0.07);
+      transition: background 0.3s;
+    }
+
+    .client-item:hover {
+      background: rgba(15, 94, 78, 0.08);
+    }
+
+    /* Section label */
+    .section-label {
+      font-family: 'Inter Tight', sans-serif;
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: #0F5E4E;
+    }
+
+    /* ===== SECTION STACKING SYSTEM ===== */
+    body>section {
+      position: sticky;
+      top: 0;
+      will-change: transform;
+    }
+
+    /* Footer stays relative — sits below insights, no overlap */
+    body>footer {
+      position: relative;
+      top: auto;
+    }
+
+    /* Depth shadow on stacking sections */
+    body>section:not(#home)::before {
+      content: '';
+      position: absolute;
+      top: -40px;
+      left: 0;
+      right: 0;
+      height: 40px;
+      background: linear-gradient(to top, rgba(0, 0, 0, 0.35), transparent);
+      pointer-events: none;
+      z-index: 2;
+    }
+
+    /* Z-index stacking order */
+    body>section:nth-of-type(1) {
+      z-index: 1;
+    }
+
+    /* Hero */
+    body>div.bg-adin-green {
+      position: relative;
+      z-index: 5;
+    }
+
+    body>section:nth-of-type(2) {
+      z-index: 10;
+    }
+
+    /* About */
+    body>section:nth-of-type(3) {
+      z-index: 20;
+    }
+
+    /* Philosophy */
+    body>section:nth-of-type(4) {
+      z-index: 30;
+    }
+
+    /* Services */
+    body>section:nth-of-type(5) {
+      z-index: 40;
+    }
+
+    /* Advisory */
+    body>section:nth-of-type(6) {
+      z-index: 50;
+    }
+
+    /* Work */
+    body>section:nth-of-type(7) {
+      z-index: 60;
+    }
+
+    /* Clients */
+    body>section:nth-of-type(8) {
+      z-index: 70;
+    }
+
+    /* Testimonials */
+    body>section:nth-of-type(9) {
+      z-index: 80;
+    }
+
+    /* Insights */
+    body>section:nth-of-type(10) {
+      z-index: 90;
+    }
+
+    /* Contact */
+    body>footer {
+      z-index: 100;
+    }
+
+    /* Section minimum heights for stacking impact */
+    body>section:nth-of-type(3),
+    body>section:nth-of-type(4),
+    body>section:nth-of-type(5),
+    body>section:nth-of-type(6),
+    body>section:nth-of-type(7),
+    body>section:nth-of-type(8),
+    body>section:nth-of-type(9),
+    body>section:nth-of-type(10),
+    body>section:nth-of-type(11) {
+      min-height: 100vh;
+    }
+
+    /* Smooth perspective for 3D transforms */
+    .work-card {
+      perspective: 1000px;
+    }
+  </style>
+</head>
+
+<body class="font-body">
+
+  <div class="cursor-dot" id="cursorDot"></div>
+  <div class="cursor-ring" id="cursorRing"></div>
+
+  <div id="mobile-menu" class="fixed inset-0 z-[200] bg-adin-black flex flex-col justify-between p-8 md:p-16">
+    <div class="flex justify-between items-center">
+      <span class="font-heading font-black text-2xl tracking-tighter">ADIN<span class="text-adin-green">.</span></span>
+      <button id="close-menu" class="text-white">
+        <svg width="32" height="32" viewBox="0 0 32 32" fill="none">
+          <line x1="6" y1="6" x2="26" y2="26" stroke="white" stroke-width="1.5" />
+          <line x1="26" y1="6" x2="6" y2="26" stroke="white" stroke-width="1.5" />
+        </svg>
+      </button>
+    </div>
+    <nav class="flex flex-col gap-6">
+      <a href="#home"
+        class="mobile-nav-link font-heading font-black text-5xl md:text-7xl tracking-tighter text-white hover:text-adin-green transition-colors">Home</a>
+      <a href="#about"
+        class="mobile-nav-link font-heading font-black text-5xl md:text-7xl tracking-tighter text-white hover:text-adin-green transition-colors">About</a>
+      <a href="#services"
+        class="mobile-nav-link font-heading font-black text-5xl md:text-7xl tracking-tighter text-white hover:text-adin-green transition-colors">Services</a>
+      <a href="#work"
+        class="mobile-nav-link font-heading font-black text-5xl md:text-7xl tracking-tighter text-white hover:text-adin-green transition-colors">Work</a>
+      <a href="#clients"
+        class="mobile-nav-link font-heading font-black text-5xl md:text-7xl tracking-tighter text-white hover:text-adin-green transition-colors">Clients</a>
+      <a href="#contact"
+        class="mobile-nav-link font-heading font-black text-5xl md:text-7xl tracking-tighter text-white hover:text-adin-green transition-colors">Contact</a>
+    </nav>
+    <div class="flex gap-6">
+      <a href="#"
+        class="text-sm text-neutral-500 hover:text-white transition-colors uppercase tracking-widest">LinkedIn</a>
+      <a href="#"
+        class="text-sm text-neutral-500 hover:text-white transition-colors uppercase tracking-widest">Instagram</a>
+      <a href="#"
+        class="text-sm text-neutral-500 hover:text-white transition-colors uppercase tracking-widest">TikTok</a>
+    </div>
+  </div>
+
+  <header id="navbar"
+    class="fixed top-0 left-0 w-full z-[100] py-6 px-6 md:px-12 lg:px-16 flex justify-between items-center">
+    <a href="#home" class="relative z-10 font-heading font-black text-xl tracking-tighter uppercase">
+      ADIN<span class="text-adin-green">.</span>
+    </a>
+    <nav class="relative z-10 hidden lg:flex items-center gap-10">
+      <a href="#home"
+        class="link-underline text-xs font-semibold uppercase tracking-widest text-white/80 hover:text-white transition-colors">Home</a>
+      <a href="#about"
+        class="link-underline text-xs font-semibold uppercase tracking-widest text-white/80 hover:text-white transition-colors">About</a>
+      <a href="#services"
+        class="link-underline text-xs font-semibold uppercase tracking-widest text-white/80 hover:text-white transition-colors">Services</a>
+      <a href="#work"
+        class="link-underline text-xs font-semibold uppercase tracking-widest text-white/80 hover:text-white transition-colors">Case
+        Studies</a>
+      <a href="#clients"
+        class="link-underline text-xs font-semibold uppercase tracking-widest text-white/80 hover:text-white transition-colors">Clients</a>
+      <a href="#insights"
+        class="link-underline text-xs font-semibold uppercase tracking-widest text-white/80 hover:text-white transition-colors">Insights</a>
+    </nav>
+    <div class="relative z-10 hidden lg:block">
+      <a href="#contact" class="btn-primary">Contact Us <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
+          <path d="M2 7h10M7 2l5 5-5 5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"
+            stroke-linejoin="round" />
+        </svg></a>
+    </div>
+    <button id="open-menu" class="relative z-10 lg:hidden text-white p-2">
+      <svg width="28" height="28" viewBox="0 0 28 28" fill="none">
+        <line x1="4" y1="8" x2="24" y2="8" stroke="white" stroke-width="1.5" stroke-linecap="round" />
+        <line x1="4" y1="14" x2="24" y2="14" stroke="white" stroke-width="1.5" stroke-linecap="round" />
+        <line x1="4" y1="20" x2="24" y2="20" stroke="white" stroke-width="1.5" stroke-linecap="round" />
+      </svg>
+    </button>
+  </header>
+
+  <section id="home" class="relative w-full" style="min-height:100svh;">
+    <div class="absolute inset-0 w-full h-full overflow-hidden">
+      <img id="hero-bg" src="./Adin Landing page - Assets/Hero BG.jpg" alt="NYC Architecture"
+        class="w-full h-full object-cover object-center scale-110">
+      <div class="absolute inset-0 bg-gradient-to-b from-black/20 via-black/50 to-adin-black"></div>
+      <div class="absolute inset-0 bg-gradient-to-r from-black/30 to-transparent"></div>
+    </div>
+
+    <div class="absolute bottom-10 left-1/2 -translate-x-1/2 z-20 flex flex-col items-center gap-3 opacity-0"
+      id="scroll-indicator">
+      <span class="section-label">Scroll</span>
+      <div class="w-px h-16 bg-gradient-to-b from-white/40 to-transparent"></div>
+    </div>
+
+    <div class="relative z-10 flex flex-col justify-end h-full px-6 md:px-12 lg:px-16 pb-20 md:pb-28"
+      style="min-height:100svh;">
+      <div class="max-w-7xl">
+        <div class="overflow-hidden mb-4">
+          <p class="section-label hero-label opacity-0 translate-y-full">New York City — Est. 1998</p>
+        </div>
+        <div class="hero-velocity-title">
+          <div class="overflow-hidden pb-4 md:pb-6">
+            <h1 class="display-heading text-white hero-h1 opacity-0 translate-y-full"
+              style="font-size:clamp(64px,11vw,160px);">
+              The Change<br>Agency<span class="text-adin-green">.</span>
+            </h1>
+          </div>
+        </div>
+        <div class="overflow-hidden mt-2 md:mt-4 max-w-2xl">
+          <p class="font-body text-lg md:text-xl text-white/70 leading-relaxed hero-sub opacity-0 translate-y-full">
+            Targeted communications for brands, thought leaders and movements shaping a better future.
+          </p>
+        </div>
+        <div class="flex flex-wrap gap-4 mt-10 hero-btns opacity-0 translate-y-8">
+          <a href="#work" class="btn-primary">View Our Work <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
+              <path d="M2 7h10M7 2l5 5-5 5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"
+                stroke-linejoin="round" />
+            </svg></a>
+          <a href="#contact" class="btn-outline">Contact Us</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="bg-adin-green py-4 overflow-hidden" style="max-height:80px;">
+    <div class="marquee-track">
+      <span class="font-heading font-bold text-sm uppercase tracking-widest text-white/90 px-8">Communications</span>
+      <span class="text-white/40 px-2">—</span>
+      <span class="font-heading font-bold text-sm uppercase tracking-widest text-white/90 px-8">Brand Strategy</span>
+      <span class="text-white/40 px-2">—</span>
+      <span class="font-heading font-bold text-sm uppercase tracking-widest text-white/90 px-8">Media Relations</span>
+      <span class="text-white/40 px-2">—</span>
+      <span class="font-heading font-bold text-sm uppercase tracking-widest text-white/90 px-8">Thought
+        Leadership</span>
+      <span class="text-white/40 px-2">—</span>
+      <span class="font-heading font-bold text-sm uppercase tracking-widest text-white/90 px-8">Experiential</span>
+      <span class="text-white/40 px-2">—</span>
+      <span class="font-heading font-bold text-sm uppercase tracking-widest text-white/90 px-8">Content Creation</span>
+      <span class="text-white/40 px-2">—</span>
+      <span class="font-heading font-bold text-sm uppercase tracking-widest text-white/90 px-8">Communications</span>
+      <span class="text-white/40 px-2">—</span>
+      <span class="font-heading font-bold text-sm uppercase tracking-widest text-white/90 px-8">Brand Strategy</span>
+      <span class="text-white/40 px-2">—</span>
+      <span class="font-heading font-bold text-sm uppercase tracking-widest text-white/90 px-8">Media Relations</span>
+      <span class="text-white/40 px-2">—</span>
+      <span class="font-heading font-bold text-sm uppercase tracking-widest text-white/90 px-8">Thought
+        Leadership</span>
+      <span class="text-white/40 px-2">—</span>
+      <span class="font-heading font-bold text-sm uppercase tracking-widest text-white/90 px-8">Experiential</span>
+      <span class="text-white/40 px-2">—</span>
+      <span class="font-heading font-bold text-sm uppercase tracking-widest text-white/90 px-8">Content Creation</span>
+      <span class="text-white/40 px-2">—</span>
+    </div>
+  </div>
+
+  <section id="about" class="bg-adin-black py-28 md:py-40 px-6 md:px-12 lg:px-16">
+    <div class="max-w-7xl mx-auto">
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-16 items-end">
+        <div class="lg:col-span-7">
+          <p class="section-label mb-8 reveal">About ADIN</p>
+          <h2 class="display-heading text-white reveal" style="font-size:clamp(40px,6vw,88px);">
+            We build authentic connections between brands and audiences<span class="text-adin-green">.</span>
+          </h2>
+        </div>
+        <div class="lg:col-span-5 lg:pb-4">
+          <div class="space-y-6 reveal">
+            <p class="font-body text-lg text-white/60 leading-relaxed">
+              Creating authentic connections between people and brands using strategic thinking, innovative
+              storytelling, compelling content and marketing expertise.
+            </p>
+            <p class="font-body text-lg text-white/60 leading-relaxed">
+              ADIN not only builds brand awareness and sales across multiple lifestyle categories, but also becomes a
+              trusted strategic partner for our clients.
+            </p>
+            <p class="font-body text-base text-white/40 leading-relaxed border-l-2 border-adin-green pl-5">
+              From brand launches to global campaigns, we help organizations tell stories that inspire trust, influence
+              culture and drive measurable growth.
+            </p>
+            <div class="pt-4">
+              <a href="#contact" class="btn-green">About ADIN <svg width="14" height="14" viewBox="0 0 14 14"
+                  fill="none">
+                  <path d="M2 7h10M7 2l5 5-5 5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"
+                    stroke-linejoin="round" />
+                </svg></a>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="grid grid-cols-2 md:grid-cols-4 gap-px mt-20 border border-white/8 reveal">
+        <div class="bg-white/[0.03] px-8 py-10 hover:bg-white/[0.06] transition-colors">
+          <p class="font-heading font-black text-5xl md:text-6xl text-white mb-2">25+</p>
+          <p class="text-xs text-white/40 uppercase tracking-widest">Years of Experience</p>
+        </div>
+        <div class="bg-white/[0.03] px-8 py-10 hover:bg-white/[0.06] transition-colors">
+          <p class="font-heading font-black text-5xl md:text-6xl text-white mb-2">50M+</p>
+          <p class="text-xs text-white/40 uppercase tracking-widest">Media Impressions</p>
+        </div>
+        <div class="bg-white/[0.03] px-8 py-10 hover:bg-white/[0.06] transition-colors">
+          <p class="font-heading font-black text-5xl md:text-6xl text-white mb-2">100+</p>
+          <p class="text-xs text-white/40 uppercase tracking-widest">Brands Served</p>
+        </div>
+        <div class="bg-white/[0.03] px-8 py-10 hover:bg-white/[0.06] transition-colors">
+          <p class="font-heading font-black text-5xl md:text-6xl text-adin-green mb-2">NYC</p>
+          <p class="text-xs text-white/40 uppercase tracking-widest">World Trade Center</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="bg-adin-black overflow-hidden" style="padding-bottom: 30vh;">
+    <div class="relative w-full" style="min-height:700px;max-height:900px;">
+      <div class="parallax-img-wrap absolute inset-0">
+        <img id="collage-bg"
+          src="https://images.unsplash.com/photo-1600607686527-6fb886090705?q=80&w=2500&auto=format&fit=crop"
+          alt="Purpose Driven" class="w-full h-full object-cover object-center">
+        <div class="absolute inset-0 bg-gradient-to-t from-adin-black via-black/60 to-black/20"></div>
+      </div>
+      <div class="relative z-10 flex flex-col justify-end h-full px-6 md:px-12 lg:px-16 pb-16 md:pb-24"
+        style="min-height:700px;">
+        <div class="max-w-5xl">
+          <p class="section-label mb-6 reveal">Our Philosophy</p>
+          <h2 class="display-heading text-white reveal" style="font-size:clamp(40px,7vw,100px);">
+            Purpose-Driven Brands Deserve Powerful Stories<span class="text-adin-green">.</span>
+          </h2>
+          <p class="font-body text-lg text-white/60 max-w-2xl mt-6 leading-relaxed reveal">
+            We collaborate with founders, companies and organizations who believe business should create impact —
+            building narratives that resonate with audiences, media and communities worldwide.
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <div class="grid grid-cols-3 gap-px bg-adin-black">
+      <div class="parallax-img-wrap overflow-hidden" style="height:320px;">
+        <img src="https://images.unsplash.com/photo-1542744173-8e7e53415bb0?q=80&w=2670&auto=format&fit=crop" alt="Team"
+          class="w-full h-full object-cover hover:scale-105 transition-transform duration-700">
+      </div>
+      <div class="parallax-img-wrap overflow-hidden" style="height:320px;">
+        <img src="https://images.unsplash.com/photo-1522071820081-009f0129c71c?q=80&w=2670&auto=format&fit=crop"
+          alt="Collaboration" class="w-full h-full object-cover hover:scale-105 transition-transform duration-700">
+      </div>
+      <div class="parallax-img-wrap overflow-hidden" style="height:320px;">
+        <img src="https://images.unsplash.com/photo-1556761175-5973dc0f32e7?q=80&w=2670&auto=format&fit=crop"
+          alt="Strategy" class="w-full h-full object-cover hover:scale-105 transition-transform duration-700">
+      </div>
+    </div>
+  </section>
+
+  <section id="services" class="bg-adin-black" style="padding-bottom: 25vh;">
+    <div
+      class="services-header px-6 md:px-12 lg:px-16 pt-28 pb-16 border-b border-white/8 relative z-[60] bg-adin-black">
+      <div class="max-w-7xl mx-auto flex flex-col md:flex-row md:items-end md:justify-between gap-6">
+        <div>
+          <p class="section-label mb-4 reveal">Our Expertise</p>
+          <h2 class="display-heading text-white reveal" style="font-size:clamp(48px,8vw,120px);">What We Do<span
+              class="text-adin-green">.</span></h2>
+        </div>
+        <p class="font-body text-white/40 max-w-xs text-base leading-relaxed reveal">Three integrated disciplines
+          working together to build brand authority.</p>
+      </div>
+    </div>
+
+    <div class="border-b border-white/8 group hover:bg-white/[0.02] transition-colors duration-500">
+      <div class="max-w-7xl mx-auto px-6 md:px-12 lg:px-16 py-16 md:py-20">
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 items-start">
+          <div class="lg:col-span-5 reveal-left">
+            <div class="parallax-img-wrap overflow-hidden" style="height:420px;">
+              <img src="./Adin Landing page - Assets/Communications Image.jpg" alt="Communications"
+                class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700">
+            </div>
+          </div>
+          <div class="lg:col-span-7 relative reveal-right">
+            <span class="service-num">01</span>
+            <p class="section-label mb-4">Service</p>
+            <h3 class="font-heading font-black text-white mb-6"
+              style="font-size:clamp(36px,5vw,72px);letter-spacing:-0.02em;line-height:1;">Communications</h3>
+            <p class="font-body text-white/50 text-lg leading-relaxed mb-8 max-w-lg">We create targeted communications
+              strategies that shape narratives and build brand credibility across influential media and cultural
+              platforms.</p>
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+              <div class="flex items-center gap-3 text-white/70 text-sm"><span
+                  class="w-1 h-1 bg-adin-green rounded-full flex-shrink-0"></span>Media Relations</div>
+              <div class="flex items-center gap-3 text-white/70 text-sm"><span
+                  class="w-1 h-1 bg-adin-green rounded-full flex-shrink-0"></span>Brand Messaging</div>
+              <div class="flex items-center gap-3 text-white/70 text-sm"><span
+                  class="w-1 h-1 bg-adin-green rounded-full flex-shrink-0"></span>PR Campaigns</div>
+              <div class="flex items-center gap-3 text-white/70 text-sm"><span
+                  class="w-1 h-1 bg-adin-green rounded-full flex-shrink-0"></span>Reputation Management</div>
+              <div class="flex items-center gap-3 text-white/70 text-sm"><span
+                  class="w-1 h-1 bg-adin-green rounded-full flex-shrink-0"></span>Thought Leadership</div>
+              <div class="flex items-center gap-3 text-white/70 text-sm"><span
+                  class="w-1 h-1 bg-adin-green rounded-full flex-shrink-0"></span>Strategic Partnerships</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="border-b border-white/8 group hover:bg-white/[0.02] transition-colors duration-500">
+      <div class="max-w-7xl mx-auto px-6 md:px-12 lg:px-16 py-16 md:py-20">
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 items-start">
+          <div class="lg:col-span-7 relative order-2 lg:order-1 reveal-left">
+            <span class="service-num">02</span>
+            <p class="section-label mb-4">Service</p>
+            <h3 class="font-heading font-black text-white mb-6"
+              style="font-size:clamp(36px,5vw,72px);letter-spacing:-0.02em;line-height:1;">Experiences</h3>
+            <p class="font-body text-white/50 text-lg leading-relaxed mb-8 max-w-lg">We design experiences that connect
+              brands directly with audiences and communities, creating lasting impressions and cultural moments.</p>
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+              <div class="flex items-center gap-3 text-white/70 text-sm"><span
+                  class="w-1 h-1 bg-adin-green rounded-full flex-shrink-0"></span>Brand Activations</div>
+              <div class="flex items-center gap-3 text-white/70 text-sm"><span
+                  class="w-1 h-1 bg-adin-green rounded-full flex-shrink-0"></span>Community Engagement</div>
+              <div class="flex items-center gap-3 text-white/70 text-sm"><span
+                  class="w-1 h-1 bg-adin-green rounded-full flex-shrink-0"></span>Experiential Campaigns</div>
+              <div class="flex items-center gap-3 text-white/70 text-sm"><span
+                  class="w-1 h-1 bg-adin-green rounded-full flex-shrink-0"></span>Partnership Experiences</div>
+              <div class="flex items-center gap-3 text-white/70 text-sm"><span
+                  class="w-1 h-1 bg-adin-green rounded-full flex-shrink-0"></span>Events and Launches</div>
+            </div>
+          </div>
+          <div class="lg:col-span-5 order-1 lg:order-2 reveal-right">
+            <div class="parallax-img-wrap overflow-hidden" style="height:420px;">
+              <img src="./Adin Landing page - Assets/Experiences Image.jpg" alt="Experiences"
+                class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700">
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="group hover:bg-white/[0.02] transition-colors duration-500">
+      <div class="max-w-7xl mx-auto px-6 md:px-12 lg:px-16 py-16 md:py-20">
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 items-start">
+          <div class="lg:col-span-5 reveal-left">
+            <div class="parallax-img-wrap overflow-hidden" style="height:420px;">
+              <img src="./Adin Landing page - Assets/Content Image.jpg" alt="Content"
+                class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700">
+            </div>
+          </div>
+          <div class="lg:col-span-7 relative reveal-right">
+            <span class="service-num">03</span>
+            <p class="section-label mb-4">Service</p>
+            <h3 class="font-heading font-black text-white mb-6"
+              style="font-size:clamp(36px,5vw,72px);letter-spacing:-0.02em;line-height:1;">Content</h3>
+            <p class="font-body text-white/50 text-lg leading-relaxed mb-8 max-w-lg">We craft stories and digital
+              content that amplify brand voices across modern media channels, driving engagement and cultural relevance.
+            </p>
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+              <div class="flex items-center gap-3 text-white/70 text-sm"><span
+                  class="w-1 h-1 bg-adin-green rounded-full flex-shrink-0"></span>Brand Storytelling</div>
+              <div class="flex items-center gap-3 text-white/70 text-sm"><span
+                  class="w-1 h-1 bg-adin-green rounded-full flex-shrink-0"></span>Social Media Strategy</div>
+              <div class="flex items-center gap-3 text-white/70 text-sm"><span
+                  class="w-1 h-1 bg-adin-green rounded-full flex-shrink-0"></span>Editorial Content</div>
+              <div class="flex items-center gap-3 text-white/70 text-sm"><span
+                  class="w-1 h-1 bg-adin-green rounded-full flex-shrink-0"></span>Campaign Content</div>
+              <div class="flex items-center gap-3 text-white/70 text-sm"><span
+                  class="w-1 h-1 bg-adin-green rounded-full flex-shrink-0"></span>Video Production</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="relative w-full" style="min-height:600px;max-height:900px;">
+    <div class="parallax-img-wrap absolute inset-0">
+      <img id="advisory-bg" src="./Adin Landing page - Assets/Strategic Advisory BG.jpg" alt="Strategic Advisory"
+        class="w-full h-full object-cover">
+      <div class="absolute inset-0 bg-gradient-to-r from-adin-black via-black/80 to-black/40"></div>
+    </div>
+    <div class="relative z-10 flex items-center h-full px-6 md:px-12 lg:px-16 py-28 md:py-40" style="min-height:600px;">
+      <div class="max-w-3xl">
+        <p class="section-label mb-6 reveal">Advisory</p>
+        <h2 class="display-heading text-white mb-8 reveal" style="font-size:clamp(40px,6vw,88px);">Strategic
+          Advisory<span class="text-adin-green">.</span></h2>
+        <p class="font-body text-xl text-white/60 leading-relaxed mb-6 reveal">
+          ADIN partners with founders, organizations and leadership teams to shape brand narratives, develop
+          communications strategies and guide growth.
+        </p>
+        <p class="font-body text-lg text-white/50 leading-relaxed mb-10 reveal">
+          From early-stage companies to established global brands, we help organizations position themselves for
+          influence, credibility and long-term success.
+        </p>
+        <div class="reveal">
+          <a href="#work" class="btn-primary">Explore Our Work <svg width="14" height="14" viewBox="0 0 14 14"
+              fill="none">
+              <path d="M2 7h10M7 2l5 5-5 5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"
+                stroke-linejoin="round" />
+            </svg></a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="work" class="bg-adin-black py-28 md:py-40 px-6 md:px-12 lg:px-16" style="margin-bottom:100vh;">
+    <div class="max-w-7xl mx-auto">
+      <div class="flex flex-col md:flex-row md:items-end md:justify-between gap-6 mb-16">
+        <div>
+          <p class="section-label mb-4 reveal">Portfolio</p>
+          <h2 class="display-heading text-white reveal" style="font-size:clamp(48px,7vw,100px);">Featured Work<span
+              class="text-adin-green">.</span></h2>
+        </div>
+        <p class="font-body text-white/40 max-w-xs text-base leading-relaxed reveal">Through thoughtful storytelling and
+          strategic communications, we help brands reach new audiences and build lasting credibility.</p>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-12 gap-4">
+        <div class="md:col-span-7 work-card group cursor-pointer relative overflow-hidden reveal-scale"
+          style="height:560px;">
+          <img src="./Adin Landing page - Assets/design for health image.jpg" alt="Designs for Health"
+            class="w-full h-full object-cover">
+          <div
+            class="work-overlay absolute inset-0 bg-gradient-to-t from-black/90 via-black/40 to-transparent flex flex-col justify-end p-8">
+            <span class="section-label mb-2">Strategic PR Campaign</span>
+            <h3 class="font-heading font-black text-white text-4xl tracking-tight">Designs for Health</h3>
+            <span
+              class="inline-flex items-center gap-2 text-white/60 text-sm mt-3 font-medium uppercase tracking-widest">View
+              Project <svg width="12" height="12" viewBox="0 0 12 12" fill="none">
+                <path d="M1 6h10M6 1l5 5-5 5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"
+                  stroke-linejoin="round" />
+              </svg></span>
+          </div>
+        </div>
+        <div class="md:col-span-5 flex flex-col gap-4">
+          <div class="work-card group cursor-pointer relative overflow-hidden reveal-scale" style="height:268px;">
+            <img src="./Adin Landing page - Assets/Earth kind image.webp" alt="EarthKind"
+              class="w-full h-full object-cover">
+            <div
+              class="work-overlay absolute inset-0 bg-gradient-to-t from-black/90 via-black/40 to-transparent flex flex-col justify-end p-6">
+              <span class="section-label mb-1">Brand Storytelling</span>
+              <h3 class="font-heading font-black text-white text-2xl tracking-tight">EarthKind</h3>
+            </div>
+          </div>
+          <div class="work-card group cursor-pointer relative overflow-hidden reveal-scale" style="height:268px;">
+            <img src="./Adin Landing page - Assets/Hooray Foods image.webp" alt="Hooray Foods"
+              class="w-full h-full object-cover">
+            <div
+              class="work-overlay absolute inset-0 bg-gradient-to-t from-black/90 via-black/40 to-transparent flex flex-col justify-end p-6">
+              <span class="section-label mb-1">Product Launch</span>
+              <h3 class="font-heading font-black text-white text-2xl tracking-tight">Hooray Foods</h3>
+            </div>
+          </div>
+        </div>
+        <div class="md:col-span-12 work-card group cursor-pointer relative overflow-hidden reveal-scale"
+          style="height:320px;">
+          <img src="./Adin Landing page - Assets/Naturepedic image.webp" alt="Naturepedic"
+            class="w-full h-full object-cover object-top">
+          <div
+            class="work-overlay absolute inset-0 bg-gradient-to-r from-black/90 via-black/50 to-transparent flex flex-col justify-center p-8 md:p-16">
+            <span class="section-label mb-2">Brand Awareness Campaign</span>
+            <h3 class="font-heading font-black text-white text-5xl md:text-6xl tracking-tight">Naturepedic</h3>
+            <span
+              class="inline-flex items-center gap-2 text-white/60 text-sm mt-4 font-medium uppercase tracking-widest">View
+              Project <svg width="12" height="12" viewBox="0 0 12 12" fill="none">
+                <path d="M1 6h10M6 1l5 5-5 5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"
+                  stroke-linejoin="round" />
+              </svg></span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="clients" class="bg-adin-light py-28 md:py-40 px-6 md:px-12 lg:px-16" style="margin-bottom:150vh;">
+    <div class="max-w-7xl mx-auto">
+      <div class="mb-16">
+        <p class="section-label mb-4 reveal" style="color:#0F5E4E;">Our Clients</p>
+        <h2 class="display-heading text-adin-black reveal" style="font-size:clamp(40px,6vw,88px);">Some of Our Trusted
+          Clients<span style="color:#0F5E4E;">.</span></h2>
+        <p class="font-body text-neutral-500 max-w-2xl text-lg leading-relaxed mt-6 reveal">
+          The brands we represent are companies whose products we proudly use ourselves. They may not always be the
+          largest in their category, but they are among the most respected for their integrity, innovation and
+          commitment to purpose.
+        </p>
+      </div>
+
+      <div class="border-t border-neutral-200">
+        <div class="client-item grid grid-cols-12 items-center py-5 px-2 reveal">
+          <span class="col-span-1 text-xs text-neutral-400 font-mono">01</span>
+          <span
+            class="col-span-7 md:col-span-5 font-heading font-bold text-2xl md:text-3xl text-adin-black tracking-tight">EarthKind</span>
+          <span class="col-span-4 md:col-span-4 hidden md:block text-sm text-neutral-400 uppercase tracking-widest">Pest
+            Control / Sustainability</span>
+          <span class="col-span-4 md:col-span-2 text-right"><span
+              class="inline-block w-2 h-2 rounded-full bg-adin-green"></span></span>
+        </div>
+        <div class="client-item grid grid-cols-12 items-center py-5 px-2 reveal">
+          <span class="col-span-1 text-xs text-neutral-400 font-mono">02</span>
+          <span
+            class="col-span-7 md:col-span-5 font-heading font-bold text-2xl md:text-3xl text-adin-black tracking-tight">Kamut</span>
+          <span
+            class="col-span-4 md:col-span-4 hidden md:block text-sm text-neutral-400 uppercase tracking-widest">Ancient
+            Grains / Food</span>
+          <span class="col-span-4 md:col-span-2 text-right"><span
+              class="inline-block w-2 h-2 rounded-full bg-adin-green"></span></span>
+        </div>
+        <div class="client-item grid grid-cols-12 items-center py-5 px-2 reveal">
+          <span class="col-span-1 text-xs text-neutral-400 font-mono">03</span>
+          <span
+            class="col-span-7 md:col-span-5 font-heading font-bold text-2xl md:text-3xl text-adin-black tracking-tight">Setria</span>
+          <span
+            class="col-span-4 md:col-span-4 hidden md:block text-sm text-neutral-400 uppercase tracking-widest">Health /
+            Nutrition</span>
+          <span class="col-span-4 md:col-span-2 text-right"><span
+              class="inline-block w-2 h-2 rounded-full bg-adin-green"></span></span>
+        </div>
+        <div class="client-item grid grid-cols-12 items-center py-5 px-2 reveal">
+          <span class="col-span-1 text-xs text-neutral-400 font-mono">04</span>
+          <span
+            class="col-span-7 md:col-span-5 font-heading font-bold text-2xl md:text-3xl text-adin-black tracking-tight">Designs
+            for Health</span>
+          <span
+            class="col-span-4 md:col-span-4 hidden md:block text-sm text-neutral-400 uppercase tracking-widest">Wellness
+            / Healthcare</span>
+          <span class="col-span-4 md:col-span-2 text-right"><span
+              class="inline-block w-2 h-2 rounded-full bg-adin-green"></span></span>
+        </div>
+        <div class="client-item grid grid-cols-12 items-center py-5 px-2 reveal">
+          <span class="col-span-1 text-xs text-neutral-400 font-mono">05</span>
+          <span
+            class="col-span-7 md:col-span-5 font-heading font-bold text-2xl md:text-3xl text-adin-black tracking-tight">Kyowa
+            Hakko</span>
+          <span
+            class="col-span-4 md:col-span-4 hidden md:block text-sm text-neutral-400 uppercase tracking-widest">Biotech
+            / Nutrition</span>
+          <span class="col-span-4 md:col-span-2 text-right"><span
+              class="inline-block w-2 h-2 rounded-full bg-adin-green"></span></span>
+        </div>
+        <div class="client-item grid grid-cols-12 items-center py-5 px-2 reveal">
+          <span class="col-span-1 text-xs text-neutral-400 font-mono">06</span>
+          <span
+            class="col-span-7 md:col-span-5 font-heading font-bold text-2xl md:text-3xl text-adin-black tracking-tight">Teens
+            for Food Justice</span>
+          <span
+            class="col-span-4 md:col-span-4 hidden md:block text-sm text-neutral-400 uppercase tracking-widest">Non-Profit
+            / Social Impact</span>
+          <span class="col-span-4 md:col-span-2 text-right"><span
+              class="inline-block w-2 h-2 rounded-full bg-adin-green"></span></span>
+        </div>
+        <div class="client-item grid grid-cols-12 items-center py-5 px-2 reveal">
+          <span class="col-span-1 text-xs text-neutral-400 font-mono">07</span>
+          <span
+            class="col-span-7 md:col-span-5 font-heading font-bold text-2xl md:text-3xl text-adin-black tracking-tight">Cognizin</span>
+          <span
+            class="col-span-4 md:col-span-4 hidden md:block text-sm text-neutral-400 uppercase tracking-widest">Cognitive
+            Health</span>
+          <span class="col-span-4 md:col-span-2 text-right"><span
+              class="inline-block w-2 h-2 rounded-full bg-adin-green"></span></span>
+        </div>
+        <div class="client-item grid grid-cols-12 items-center py-5 px-2 reveal">
+          <span class="col-span-1 text-xs text-neutral-400 font-mono">08</span>
+          <span
+            class="col-span-7 md:col-span-5 font-heading font-bold text-2xl md:text-3xl text-adin-black tracking-tight">Hooray
+            Foods</span>
+          <span
+            class="col-span-4 md:col-span-4 hidden md:block text-sm text-neutral-400 uppercase tracking-widest">Plant-Based
+            Food</span>
+          <span class="col-span-4 md:col-span-2 text-right"><span
+              class="inline-block w-2 h-2 rounded-full bg-adin-green"></span></span>
+        </div>
+        <div class="client-item grid grid-cols-12 items-center py-5 px-2 reveal">
+          <span class="col-span-1 text-xs text-neutral-400 font-mono">09</span>
+          <span
+            class="col-span-7 md:col-span-5 font-heading font-bold text-2xl md:text-3xl text-adin-black tracking-tight">Naturepedic</span>
+          <span
+            class="col-span-4 md:col-span-4 hidden md:block text-sm text-neutral-400 uppercase tracking-widest">Organic
+            / Sleep</span>
+          <span class="col-span-4 md:col-span-2 text-right"><span
+              class="inline-block w-2 h-2 rounded-full bg-adin-green"></span></span>
+        </div>
+        <div class="client-item grid grid-cols-12 items-center py-5 px-2 reveal">
+          <span class="col-span-1 text-xs text-neutral-400 font-mono">10</span>
+          <span
+            class="col-span-7 md:col-span-5 font-heading font-bold text-2xl md:text-3xl text-adin-black tracking-tight">Dukan
+            Diet</span>
+          <span
+            class="col-span-4 md:col-span-4 hidden md:block text-sm text-neutral-400 uppercase tracking-widest">Nutrition
+            / Lifestyle</span>
+          <span class="col-span-4 md:col-span-2 text-right"><span
+              class="inline-block w-2 h-2 rounded-full bg-adin-green"></span></span>
+        </div>
+        <div class="client-item grid grid-cols-12 items-center py-5 px-2 reveal">
+          <span class="col-span-1 text-xs text-neutral-400 font-mono">11</span>
+          <span
+            class="col-span-7 md:col-span-5 font-heading font-bold text-2xl md:text-3xl text-adin-black tracking-tight">Trilogy</span>
+          <span
+            class="col-span-4 md:col-span-4 hidden md:block text-sm text-neutral-400 uppercase tracking-widest">Beauty /
+            Skincare</span>
+          <span class="col-span-4 md:col-span-2 text-right"><span
+              class="inline-block w-2 h-2 rounded-full bg-adin-green"></span></span>
+        </div>
+        <div class="client-item grid grid-cols-12 items-center py-5 px-2 reveal border-b border-neutral-200">
+          <span class="col-span-1 text-xs text-neutral-400 font-mono">12</span>
+          <span
+            class="col-span-7 md:col-span-5 font-heading font-bold text-2xl md:text-3xl text-adin-black tracking-tight">EarthFruits</span>
+          <span
+            class="col-span-4 md:col-span-4 hidden md:block text-sm text-neutral-400 uppercase tracking-widest">Organic
+            / Food</span>
+          <span class="col-span-4 md:col-span-2 text-right"><span
+              class="inline-block w-2 h-2 rounded-full bg-adin-green"></span></span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="bg-adin-black py-28 md:py-40 px-6 md:px-12 lg:px-16">
+    <div class="max-w-7xl mx-auto">
+      <p class="section-label mb-4 reveal">Testimonials</p>
+      <h2 class="display-heading text-white mb-20 reveal" style="font-size:clamp(40px,6vw,80px);">What Our Clients
+        Say<span class="text-adin-green">.</span></h2>
+
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-12">
+        <div class="testimonial-card reveal">
+          <p class="font-body text-white/60 text-lg leading-relaxed mb-8">
+            "During the onset of COVID-19, ADIN coordinated with experts and local media outlets across multiple
+            locations to execute a PR campaign that generated nearly 50 million impressions across television, radio,
+            print and online."
+          </p>
+          <div>
+            <p class="font-heading font-bold text-white text-lg">Neal Mercado</p>
+            <p class="text-xs text-adin-green uppercase tracking-widest mt-1">Chief Marketing Officer, Designs for
+              Health</p>
+          </div>
+        </div>
+        <div class="testimonial-card reveal">
+          <p class="font-body text-white/60 text-lg leading-relaxed mb-8">
+            "ADIN has a unique ability to identify opportunities and trends. For purpose-driven entrepreneurs like
+            myself, that insight is invaluable."
+          </p>
+          <div>
+            <p class="font-heading font-bold text-white text-lg">Kari Warberg Block</p>
+            <p class="text-xs text-adin-green uppercase tracking-widest mt-1">CEO & Founder, EarthKind</p>
+          </div>
+        </div>
+        <div class="testimonial-card reveal">
+          <p class="font-body text-white/60 text-lg leading-relaxed mb-8">
+            "ADIN leveraged our company's pivot into producing facemasks to generate millions of consumer impressions,
+            driving both brand awareness and sales."
+          </p>
+          <div>
+            <p class="font-heading font-bold text-white text-lg">Barry Cik</p>
+            <p class="text-xs text-adin-green uppercase tracking-widest mt-1">Founder, Naturepedic</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="insights" class="bg-white py-28 md:py-40 px-6 md:px-12 lg:px-16" style="max-height:1100px;">
+    <div class="max-w-7xl mx-auto">
+      <div class="flex flex-col md:flex-row md:items-end md:justify-between gap-6 mb-16">
+        <div>
+          <p class="section-label mb-4 reveal" style="color:#0F5E4E;">Journal</p>
+          <h2 class="display-heading text-adin-black reveal" style="font-size:clamp(48px,7vw,100px);">Insights<span
+              style="color:#0F5E4E;">.</span></h2>
+        </div>
+        <a href="#" class="btn-green self-start md:self-end reveal">View All <svg width="14" height="14"
+            viewBox="0 0 14 14" fill="none">
+            <path d="M2 7h10M7 2l5 5-5 5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"
+              stroke-linejoin="round" />
+          </svg></a>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+        <article class="group cursor-pointer reveal">
+          <div class="overflow-hidden mb-6" style="height:280px;">
+            <img src="https://images.unsplash.com/photo-1552664730-d307ca884978?q=80&w=2670&auto=format&fit=crop"
+              alt="Communications"
+              class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700">
+          </div>
+          <span class="section-label" style="color:#0F5E4E;">Strategy</span>
+          <h3
+            class="font-heading font-bold text-adin-black text-2xl mt-3 mb-3 leading-tight group-hover:text-adin-green transition-colors">
+            The Role of Communications in Purpose-Driven Brands</h3>
+          <a href="#"
+            class="link-underline text-xs font-bold uppercase tracking-widest text-neutral-400 hover:text-adin-black transition-colors">Read
+            Article</a>
+        </article>
+        <article class="group cursor-pointer reveal">
+          <div class="overflow-hidden mb-6" style="height:280px;">
+            <img src="https://images.unsplash.com/photo-1504711434969-e33886168f5c?q=80&w=2670&auto=format&fit=crop"
+              alt="Media Strategy"
+              class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700">
+          </div>
+          <span class="section-label" style="color:#0F5E4E;">Media</span>
+          <h3
+            class="font-heading font-bold text-adin-black text-2xl mt-3 mb-3 leading-tight group-hover:text-adin-green transition-colors">
+            How Media Strategy Builds Brand Trust</h3>
+          <a href="#"
+            class="link-underline text-xs font-bold uppercase tracking-widest text-neutral-400 hover:text-adin-black transition-colors">Read
+            Article</a>
+        </article>
+        <article class="group cursor-pointer reveal">
+          <div class="overflow-hidden mb-6" style="height:280px;">
+            <img src="https://images.unsplash.com/photo-1542744173-8e7e53415bb0?q=80&w=2670&auto=format&fit=crop"
+              alt="Conscious Consumer"
+              class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700">
+          </div>
+          <span class="section-label" style="color:#0F5E4E;">Trends</span>
+          <h3
+            class="font-heading font-bold text-adin-black text-2xl mt-3 mb-3 leading-tight group-hover:text-adin-green transition-colors">
+            The Future of Conscious Consumer Brands</h3>
+          <a href="#"
+            class="link-underline text-xs font-bold uppercase tracking-widest text-neutral-400 hover:text-adin-black transition-colors">Read
+            Article</a>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <section id="contact" class="relative bg-adin-black" style="min-height:800px; max-height:1200px;">
+    <div class="parallax-img-wrap absolute inset-0">
+      <img id="contact-bg"
+        src="https://images.unsplash.com/photo-1542811869-c10bcd3b1b31?q=80&w=1474&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
+        alt="NYC Skyline" class="w-full h-full object-cover">
+      <div class="absolute inset-0 bg-gradient-to-b from-adin-black/80 via-adin-black/90 to-adin-black"></div>
+    </div>
+
+    <div class="relative z-10 px-6 md:px-12 lg:px-16 py-28 md:py-40" style="min-height:800px;">
+      <div class="max-w-7xl mx-auto">
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-20 items-start">
+          <div>
+            <p class="section-label mb-6 reveal">Get In Touch</p>
+            <h2 class="display-heading text-white mb-8 reveal" style="font-size:clamp(40px,6vw,88px);">We'd Love to Hear
+              From You<span class="text-adin-green">.</span></h2>
+            <p class="font-body text-xl text-white/50 leading-relaxed mb-12 max-w-md reveal">
+              If you are building a brand that aims to create positive impact, we'd love to explore how we can help.
+            </p>
+            <div class="space-y-8 reveal">
+              <div>
+                <p class="section-label mb-2">Office</p>
+                <p class="font-body text-white/70 text-lg leading-relaxed">7 World Trade Center<br>250 Greenwich
+                  St<br>New York, NY 10007</p>
+              </div>
+              <div>
+                <p class="section-label mb-2">Phone</p>
+                <a href="tel:9178338101"
+                  class="font-body text-white/70 text-lg hover:text-white transition-colors">917-833-8101</a>
+              </div>
+              <div>
+                <p class="section-label mb-2">Email</p>
+                <a href="mailto:sue@adinnyc.com"
+                  class="font-body text-white/70 text-lg hover:text-white transition-colors link-underline">sue@adinnyc.com</a>
+              </div>
+            </div>
+          </div>
+
+          <div class="reveal">
+            <form class="space-y-8">
+              <div class="grid grid-cols-2 gap-6">
+                <div>
+                  <label class="section-label block mb-3">First Name</label>
+                  <input type="text" class="form-input" placeholder="Jane">
+                </div>
+                <div>
+                  <label class="section-label block mb-3">Last Name</label>
+                  <input type="text" class="form-input" placeholder="Doe">
+                </div>
+              </div>
+              <div>
+                <label class="section-label block mb-3">Email</label>
+                <input type="email" class="form-input" placeholder="jane@company.com">
+              </div>
+              <div>
+                <label class="section-label block mb-3">Message</label>
+                <textarea class="form-input resize-none" rows="5"
+                  placeholder="Tell us about your project..."></textarea>
+              </div>
+              <button type="button" class="btn-primary w-full justify-center">
+                Submit Message <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
+                  <path d="M2 7h10M7 2l5 5-5 5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"
+                    stroke-linejoin="round" />
+                </svg>
+              </button>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <footer class="bg-adin-black border-t border-white/8 px-6 md:px-12 lg:px-16 py-16" style="max-height:400px;">
+    <div class="max-w-7xl mx-auto">
+      <div class="grid grid-cols-1 md:grid-cols-12 gap-12 mb-16">
+        <div class="md:col-span-4">
+          <a href="#home" class="font-heading font-black text-3xl tracking-tighter text-white block mb-4">ADIN<span
+              class="text-adin-green">.</span></a>
+          <p class="text-white/40 text-sm leading-relaxed">The Change Agency.<br>New York City.</p>
+        </div>
+        <div class="md:col-span-4">
+          <p class="section-label mb-4">Navigate</p>
+          <nav class="flex flex-col gap-3">
+            <a href="#home" class="link-underline text-white/50 text-sm hover:text-white transition-colors">Home</a>
+            <a href="#about" class="link-underline text-white/50 text-sm hover:text-white transition-colors">About</a>
+            <a href="#services"
+              class="link-underline text-white/50 text-sm hover:text-white transition-colors">Services</a>
+            <a href="#work" class="link-underline text-white/50 text-sm hover:text-white transition-colors">Case
+              Studies</a>
+            <a href="#contact"
+              class="link-underline text-white/50 text-sm hover:text-white transition-colors">Connect</a>
+          </nav>
+        </div>
+        <div class="md:col-span-4">
+          <p class="section-label mb-4">Connect</p>
+          <div class="flex flex-col gap-3">
+            <a href="#" class="link-underline text-white/50 text-sm hover:text-white transition-colors">LinkedIn</a>
+            <a href="#" class="link-underline text-white/50 text-sm hover:text-white transition-colors">Instagram</a>
+            <a href="#" class="link-underline text-white/50 text-sm hover:text-white transition-colors">TikTok</a>
+          </div>
+        </div>
+      </div>
+      <div class="border-t border-white/8 pt-8 flex flex-col md:flex-row justify-between items-center gap-4">
+        <p class="text-white/30 text-xs">© 2024 ADIN NYC. All rights reserved.</p>
+        <p class="text-white/30 text-xs">7 World Trade Center, 250 Greenwich St, New York, NY 10007</p>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    gsap.registerPlugin(ScrollTrigger);
+
+    /* =============================================
+       DYNAMIC STICKY POSITIONS (Fixes cut-off tall sections)
+    ============================================= */
+    function updateStickyStacking() {
+      const sections = document.querySelectorAll("body > section:not(#home)");
+      sections.forEach(sec => {
+        // Calculate the optimal top offset so the bottom of tall sections
+        // aligns with the bottom of the viewport when stuck.
+        const h = sec.offsetHeight;
+        const winH = window.innerHeight;
+        const stickyTop = Math.min(0, winH - h);
+        sec.style.top = stickyTop + "px";
+      });
+    }
+    updateStickyStacking();
+    window.addEventListener("resize", updateStickyStacking);
+    window.addEventListener("load", updateStickyStacking);
+
+    /* =============================================
+       CUSTOM CURSOR
+    ============================================= */
+    const dot = document.getElementById('cursorDot');
+    const ring = document.getElementById('cursorRing');
+    let mouseX = 0, mouseY = 0;
+    let ringX = 0, ringY = 0;
+
+    document.addEventListener('mousemove', e => {
+      mouseX = e.clientX;
+      mouseY = e.clientY;
+      gsap.to(dot, { x: mouseX, y: mouseY, duration: 0.1 });
+    });
+
+    function animateRing() {
+      ringX += (mouseX - ringX) * 0.12;
+      ringY += (mouseY - ringY) * 0.12;
+      ring.style.left = ringX + "px";
+      ring.style.top = ringY + "px";
+      requestAnimationFrame(animateRing);
+    }
+    animateRing();
+
+    document.querySelectorAll("a,button,.work-card,.client-item").forEach(el => {
+      el.addEventListener("mouseenter", () => ring.classList.add("hover"));
+      el.addEventListener("mouseleave", () => ring.classList.remove("hover"));
+    });
+
+    /* =============================================
+       NAVBAR SCROLL
+    ============================================= */
+    const navbar = document.getElementById("navbar");
+    ScrollTrigger.create({
+      start: "top -80",
+      onEnter: () => navbar.classList.add("scrolled"),
+      onLeaveBack: () => navbar.classList.remove("scrolled")
+    });
+
+    /* =============================================
+       MOBILE MENU
+    ============================================= */
+    document.getElementById("open-menu").addEventListener("click", () => {
+      document.getElementById("mobile-menu").classList.add("open");
+    });
+    document.getElementById("close-menu").addEventListener("click", () => {
+      document.getElementById("mobile-menu").classList.remove("open");
+    });
+    document.querySelectorAll(".mobile-nav-link").forEach(link => {
+      link.addEventListener("click", () => {
+        document.getElementById("mobile-menu").classList.remove("open");
+      });
+    });
+
+    /* =============================================
+       HERO CINEMATIC ENTRANCE
+    ============================================= */
+    gsap.fromTo("#hero-bg",
+      { scale: 1.15 },
+      { scale: 1, duration: 2.8, ease: "power2.out" }
+    );
+
+    const heroTL = gsap.timeline({ delay: 0.3 });
+    heroTL
+      .fromTo(".hero-label", { y: 60, opacity: 0 }, { y: 0, opacity: 1, duration: 0.8, ease: "power3.out" })
+      .fromTo(".hero-h1", { y: 120, opacity: 0 }, { y: 0, opacity: 1, duration: 1.2, ease: "power3.out" }, "-=0.5")
+      .fromTo(".hero-sub", { y: 80, opacity: 0 }, { y: 0, opacity: 1, duration: 0.9, ease: "power3.out" }, "-=0.6")
+      .fromTo(".hero-btns", { y: 40, opacity: 0 }, { y: 0, opacity: 1, duration: 0.8, ease: "power3.out" }, "-=0.5")
+      .fromTo("#scroll-indicator", { y: 10, opacity: 0 }, { opacity: 1, y: -4, duration: 1, ease: "power2.out" }, "-=0.4");
+
+    /* =============================================
+       HERO SCROLL-OUT PARALLAX
+       Hero content fades & scales as you scroll past
+    ============================================= */
+    gsap.to("#hero-bg", {
+      yPercent: 30,
+      scale: 1.1,
+      ease: "none",
+      scrollTrigger: {
+        trigger: "#home",
+        start: "top top",
+        end: "bottom top",
+        scrub: true
+      }
+    });
+
+    // Hero content fades out as next section covers it
+    gsap.to("#home > .relative.z-10", {
+      opacity: 0,
+      y: -80,
+      scale: 0.96,
+      ease: "none",
+      scrollTrigger: {
+        trigger: "#home",
+        start: "30% top",
+        end: "80% top",
+        scrub: true
+      }
+    });
+
+    // Scroll indicator fades quickly
+    gsap.to("#scroll-indicator", {
+      opacity: 0,
+      ease: "none",
+      scrollTrigger: {
+        trigger: "#home",
+        start: "5% top",
+        end: "15% top",
+        scrub: true
+      }
+    });
+
+    /* =============================================
+       MULTI-SPEED BACKGROUND PARALLAX
+    ============================================= */
+    gsap.to("#collage-bg", {
+      yPercent: 25,
+      ease: "none",
+      scrollTrigger: { trigger: "#collage-bg", start: "top bottom", end: "bottom top", scrub: true }
+    });
+    gsap.to("#advisory-bg", {
+      yPercent: 25,
+      ease: "none",
+      scrollTrigger: { trigger: "#advisory-bg", start: "top bottom", end: "bottom top", scrub: true }
+    });
+    gsap.to("#contact-bg", {
+      yPercent: 20,
+      ease: "none",
+      scrollTrigger: { trigger: "#contact", start: "top bottom", end: "bottom top", scrub: true }
+    });
+
+    /* =============================================
+       IMAGE CLIP-PATH REVEAL
+    ============================================= */
+    gsap.utils.toArray(".parallax-img-wrap").forEach(wrap => {
+      gsap.fromTo(wrap,
+        { clipPath: "inset(0% 0% 100% 0%)" },
+        {
+          clipPath: "inset(0% 0% 0% 0%)",
+          duration: 1.4,
+          ease: "power3.inOut",
+          scrollTrigger: { trigger: wrap, start: "top 90%" }
+        }
+      );
+    });
+
+    /* =============================================
+       FLOATING IMAGE PARALLAX (depth layers)
+    ============================================= */
+    gsap.utils.toArray(".parallax-img-wrap img").forEach(img => {
+      gsap.to(img, {
+        yPercent: 15,
+        ease: "none",
+        scrollTrigger: { trigger: img, start: "top bottom", end: "bottom top", scrub: true }
+      });
+    });
+
+    /* =============================================
+       CLIP-PATH HEADING REVEALS
+       Cinematic "wipe up" instead of simple fade
+    ============================================= */
+    gsap.utils.toArray(".display-heading").forEach(heading => {
+      gsap.fromTo(heading,
+        { clipPath: "inset(0 0 100% 0)", y: 60, opacity: 0 },
+        {
+          clipPath: "inset(0 0 0% 0)",
+          y: 0,
+          opacity: 1,
+          duration: 1.3,
+          ease: "power3.out",
+          scrollTrigger: { trigger: heading, start: "top 88%" }
+        }
+      );
+    });
+
+    /* =============================================
+       SCROLL REVEALS
+    ============================================= */
+    gsap.utils.toArray(".reveal").forEach(el => {
+      gsap.fromTo(el,
+        { opacity: 0, y: 50 },
+        {
+          opacity: 1, y: 0,
+          duration: 1,
+          ease: "power3.out",
+          scrollTrigger: { trigger: el, start: "top 90%" }
+        }
+      );
+    });
+
+    gsap.utils.toArray(".reveal-left").forEach(el => {
+      gsap.fromTo(el,
+        { opacity: 0, x: -60 },
+        {
+          opacity: 1, x: 0,
+          duration: 1.1,
+          ease: "power3.out",
+          scrollTrigger: { trigger: el, start: "top 85%" }
+        }
+      );
+    });
+
+    gsap.utils.toArray(".reveal-right").forEach(el => {
+      gsap.fromTo(el,
+        { opacity: 0, x: 60 },
+        {
+          opacity: 1, x: 0,
+          duration: 1.1,
+          ease: "power3.out",
+          scrollTrigger: { trigger: el, start: "top 85%" }
+        }
+      );
+    });
+
+    /* =============================================
+       COUNTER ANIMATIONS
+       Stats numbers animate from 0
+    ============================================= */
+    document.querySelectorAll("#about .font-heading.font-black").forEach(el => {
+      const text = el.textContent.trim();
+      const match = text.match(/^(\d+)(.*)/);
+      if (match) {
+        const target = parseInt(match[1]);
+        const suffix = match[2];
+        const counter = { val: 0 };
+        el.textContent = "0" + suffix;
+        gsap.to(counter, {
+          val: target,
+          duration: 2.2,
+          ease: "power2.out",
+          scrollTrigger: { trigger: el, start: "top 90%" },
+          onUpdate: () => {
+            el.textContent = Math.floor(counter.val) + suffix;
+          }
+        });
+      }
+    });
+
+    /* =============================================
+       WORK CARD STAGGER (enhanced 3D)
+    ============================================= */
+    gsap.utils.toArray(".work-card").forEach((card, i) => {
+      gsap.fromTo(card,
+        { opacity: 0, y: 100, scale: 0.9, rotateX: 5 },
+        {
+          opacity: 1, y: 0, scale: 1, rotateX: 0,
+          duration: 1.2,
+          delay: i * 0.12,
+          ease: "power3.out",
+          scrollTrigger: { trigger: card, start: "top 92%" }
+        }
+      );
+    });
+
+    /* =============================================
+       CLIENT LIST STAGGER
+    ============================================= */
+    gsap.utils.toArray(".client-item").forEach((el, i) => {
+      gsap.fromTo(el,
+        { opacity: 0, x: -30 },
+        {
+          opacity: 1, x: 0,
+          duration: 0.6,
+          ease: "power2.out",
+          delay: i * 0.04,
+          scrollTrigger: { trigger: el, start: "top 92%" }
+        }
+      );
+    });
+
+    /* =============================================
+       BUTTON MICRO INTERACTIONS
+    ============================================= */
+    document.querySelectorAll(".btn-primary,.btn-outline,.btn-green").forEach(btn => {
+      btn.addEventListener("mouseenter", () => gsap.to(btn, { y: -3, duration: 0.2 }));
+      btn.addEventListener("mouseleave", () => gsap.to(btn, { y: 0, duration: 0.2 }));
+    });
+
+    /* =============================================
+       SCROLL VELOCITY DEPTH
+    ============================================= */
+    ScrollTrigger.create({
+      onUpdate: self => {
+        const raw = self.getVelocity() * -0.005;
+        const clamped = Math.max(-8, Math.min(8, raw));
+        gsap.to(".hero-velocity-title", {
+          y: clamped,
+          duration: 0.6,
+          ease: "power2.out"
+        });
+      }
+    });
+  </script>
+</body>
+
+</html>
